@@ -1,4 +1,7 @@
 - name: Install updates for all packages
-  dnf:
-    name: "*"
-    state: latest
+  hosts: all
+  tasks:
+    - name: Install updates for all packages
+      dnf:
+        name: "*"
+        state: latest
