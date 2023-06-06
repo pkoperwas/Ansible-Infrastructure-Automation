@@ -1,0 +1,17 @@
+- name: enable neofetch
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: neofetch package installation
+      dnf:
+        name:
+          - neofetch
+
+    - name: enable neofetch
+      lineinfile:
+        path: /etc/profile.d/nice_motd.sh
+        create: yes
+        line: neofetch --disable packages
