@@ -1,0 +1,24 @@
+- name: Install updates for all packages
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: install chrony
+      dnf:
+        name:
+          - chrony
+        state: latest
+
+    - name: change time servers to pool from PL
+      replace:
+        path: /etc/chrony.conf
+        regexp: '(^pool\s)(.*)$'
+        replace: 'pool pl.pool.ntp.org iburst'
+
+    - name: enable and start chrony
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
