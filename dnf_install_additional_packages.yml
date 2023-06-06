@@ -11,8 +11,7 @@
         name: codeready-builder-for-rhel-9-x86_64-rpms
         state: enabled
 
-    - name: Import EPEL GPG Key
-      rpm_key:
+    - rpm_key:
         state: present
         key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
 
