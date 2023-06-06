@@ -1,0 +1,72 @@
+- name: Install additional packages 
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+
+    - name: Enable codeready-builder-for-rhel-9-x86_64-rpms
+      rhsm_repository:
+        name: codeready-builder-for-rhel-9-x86_64-rpms
+        state: enabled
+
+    - rpm_key:
+      state: present
+        key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+
+    - name: Enable epel-repository
+      dnf:
+        name:
+          - https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+
+    - name: Install additional packages 
+      dnf:
+        name: "*"
+        name:
+          - wget
+          - bc
+          - sysstat
+          - tcpdump
+          - unzip
+          - nc
+          - mc
+          - openssh-clients
+          - vim
+          - subscription-manager
+          - rsync
+          - telnet
+          - dnf-utils
+          - lsof
+          - bzip2
+          - bind-utils
+          - dstat
+          - net-tools
+          - nmap
+          - pwgen
+          - mtr
+          - htop
+          - numactl
+          - pcp
+          - bash-completion
+          - ncdu
+          - dos2unix
+          - git
+          - nfs-utils
+          - samba-client
+          - cifs-utils
+          - iscsi-initiator-utils
+          - screen
+          - tmux
+          - iotop
+          - atop
+          - hrop
+          - dnf-automatic
+          - perl
+          - python3-pip
+          - sg3_utils
+          - nload
+          - glances
+          - xterm
+          - nethogs
+          - rpmconf
