@@ -22,7 +22,6 @@
 
     - name: Install additional packages 
       dnf:
-        name: "*"
         name:
           - wget
           - bc
