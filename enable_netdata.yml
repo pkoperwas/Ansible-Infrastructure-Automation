@@ -1,4 +1,4 @@
-- name: Install updates for all packages
+- name: Enable Netdata
   hosts: all
   gather_facts: false
   become: true
