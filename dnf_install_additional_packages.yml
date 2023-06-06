@@ -4,8 +4,6 @@
   become: true
   remote_user: ansible
   become_method: sudo
-  collections:
-    - name: rhsm
   tasks:
     - name: Enable codeready-builder-for-rhel-9-x86_64-rpms
       rhsm_repository:
