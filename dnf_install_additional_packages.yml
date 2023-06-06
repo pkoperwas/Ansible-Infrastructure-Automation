@@ -55,7 +55,6 @@
           - tmux
           - iotop
           - atop
-          - hrop
           - dnf-automatic
           - perl
           - python3-pip
