@@ -5,21 +5,17 @@
   remote_user: ansible
   become_method: sudo
   tasks:
-
     - name: Enable codeready-builder-for-rhel-9-x86_64-rpms
       rhsm_repository:
         name: codeready-builder-for-rhel-9-x86_64-rpms
         state: enabled
-
     - rpm_key:
         state: present
         key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
-
     - name: Enable epel-repository
       dnf:
         name:
           - https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-
     - name: Install additional packages 
       dnf:
         name: "*"
