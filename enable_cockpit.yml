@@ -14,8 +14,6 @@
     - name: Firewald status check
       command: systemctl is-active firewalld
       register: firewalld_status
-      changed_when: false
-      failed_when: false
 
     - name: Reconfigure firewalld if enabled
       firewalld:
@@ -23,7 +21,7 @@
         permanent: yes
         state: enabled
         immediate: yes
-      when: firewalld_status.stdout == "active
+      when: firewalld_status.stdout == "active"
 
     - name: start and enable cockpit
       service:
