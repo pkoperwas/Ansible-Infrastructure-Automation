@@ -1,0 +1,36 @@
+- name: Prompt Adjustment
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: insert a line with HISTTIMEFORMAT to /etc/profile.d/shell_configuration.sh
+      lineinfile:
+        create: yes
+        path: /etc/profile.d/shell_configuration.sh
+        line: export HISTTIMEFORMAT='%h/%d %H:%M:%S '
+
+    - name: insert a line with HISTSIZE to /etc/profile.d/shell_configuration.sh
+      lineinfile:
+        path: /etc/profile.d/shell_configuration.sh
+        line: export HISTSIZE=9999
+
+    - name: insert a line with color prompt to /etc/profile.d/shell_configuration.sh
+      lineinfile:
+        dest: /etc/profile.d/shell_configuration.sh
+        line: '{{ item }}'
+      with_items:
+        - 'NORMAL="\[\e[0m\]"'
+        - 'RED="\[\e[1;31m\]"'
+        - 'GREEN="\[\e[1;32m\]"'
+        - 'if [[ $EUID == 0 ]] ; then'
+        - '  PS1="$RED\u@\h [ $NORMAL\w$RED ]# $NORMAL"'
+        - 'else'
+        - '  PS1="$GREEN\u@\h [ $NORMAL\w$GREEN ]\$ $NORMAL"'
+        - 'fi'
+
+    - name: insert a line with colorscheme for vim editior to /etc/vimrc
+      lineinfile:
+        path: /etc/vimrc
+        line: colorscheme desert
