@@ -1,0 +1,9 @@
+- name: Reboot OS
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: reboot OS
+      reboot:
