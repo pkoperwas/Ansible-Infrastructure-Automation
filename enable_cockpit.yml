@@ -1,0 +1,24 @@
+- name: enable cockpit
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: package installation
+      dnf:
+        name:
+          - cockpit
+        state: latest
+
+    - firewalld:
+        service: cockpit
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: start and enable cockpit
+      service:
+        name: cockpit.socket
+        state: started
+        enabled: yes
