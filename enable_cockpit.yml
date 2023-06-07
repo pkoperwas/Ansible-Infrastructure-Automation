@@ -16,6 +16,7 @@
         permanent: yes
         state: enabled
         immediate: yes
+      ignore_errors: true
 
     - name: start and enable cockpit
       service:
