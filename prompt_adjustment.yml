@@ -34,3 +34,13 @@
       lineinfile:
         path: /etc/vimrc
         line: colorscheme desert
+
+
+    - name: insert a line with sessiontimeout  to /etc/profile.d/sessiontimeout.sh
+      lineinfile:
+        dest: /etc/profile.d/sessiontimeout.sh
+        line: '{{ item }}'
+      with_items:
+        - 'SESSTIMEOUT=3600 '
+        - 'readonly SESSTIMEOUT'
+        - 'export SESSTIMEOUT'
