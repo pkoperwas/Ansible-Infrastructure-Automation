@@ -36,9 +36,9 @@
         line: colorscheme desert
 
 
-    - name: insert a line with sessiontimeout  to /etc/profile.d/sessiontimeout.sh
+    - name: insert a line with sessiontimeout  to /etc/profile.d/shell_configuration.sh
       lineinfile:
-        dest: /etc/profile.d/sessiontimeout.sh
+        dest: /etc/profile.d/shell_configuration.sh
         line: '{{ item }}'
       with_items:
         - 'SESSTIMEOUT=3600 '
