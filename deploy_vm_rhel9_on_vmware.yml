@@ -10,20 +10,20 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: False
         guest_id: rhel9-64
-        name: '{{ vmname }}'
+        name: '{{ vmname }}' 
         state: poweredon
         template: rhel9-template
         datacenter: Datacenter
-        folder: '{{ folder }}'
+        folder: ansible-deploy
         esxi_hostname: '{{ esxhost }}'
         disk:
-        - size_gb: '{{ disk_size }}'
-          type: '{{ disk_type }}'
+        - size_gb: 20
+          type: thin
           datastore: '{{ datastore }}'
         hardware:
           memory_mb: '{{ memory_mb }}'
           num_cpus: '{{ num_cpus }}'
-          scsi: '{{ scsi_type }}'
+          scsi: paravirtual
         wait_for_customization: no
         wait_for_customization_timeout: 300
         wait_for_ip_address: yes
@@ -47,7 +47,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter: Datacenter
-        validate_certs: 
+        validate_certs: no
         name: '{{ vmname }}'
         mac_address: "{{ vmware_guest_network_info.network_data['0']['mac_address'] }}"
         network_name: '{{ vlan }}' 
@@ -61,12 +61,12 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: Datacenter
-        folder: '{{ folder }}'
+        folder: ansible-deploy
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
         vm_password: '{{ vm_password }}'
         vm_shell: "/usr/bin/hostnamectl"
-        vm_shell_args: "set-hostname '{{ vmname }}'"
+        vm_shell_args: "set-hostname '{{ vmhostname }}'"
       delegate_to: localhost
 
     - name: Change ip, netmask, gateway, dns, dns suffix on guest machine
@@ -76,7 +76,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: Datacenter
-        folder: '{{ folder }}'
+        folder: ansible-deploy
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
         vm_password: '{{ vm_password }}'
@@ -91,7 +91,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: Datacenter
-        folder: '{{ folder }}'
+        folder: ansible-deploy
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
         vm_password: '{{ vm_password }}'
@@ -106,7 +106,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: Datacenter
-        folder: '{{ folder }}'
+        folder: ansible-deploy
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
         vm_password: '{{ vm_password }}'
