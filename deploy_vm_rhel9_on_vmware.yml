@@ -9,11 +9,11 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: False
-        guest_id: '{{ guest_id }}'
+        guest_id: rhel9-64
         name: '{{ vmname }}'
         state: poweredon
-        template: '{{ vmtemplate }}'
-        datacenter: '{{ datacenter }}'
+        template: rhel9-template
+        datacenter: Datacenter
         folder: '{{ folder }}'
         esxi_hostname: '{{ esxhost }}'
         disk:
@@ -34,7 +34,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{ datacenter }}'
+        datacenter: Datacenter
         gather_network_info: true
         validate_certs: 
         name: '{{ vmname }}'
@@ -46,7 +46,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        datacenter: '{{ datacenter }}'
+        datacenter: Datacenter
         validate_certs: 
         name: '{{ vmname }}'
         mac_address: "{{ vmware_guest_network_info.network_data['0']['mac_address'] }}"
@@ -60,8 +60,8 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
-        datacenter: '{{ datacenter }}'
-        folder: /
+        datacenter: Datacenter
+        folder: '{{ folder }}'
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
         vm_password: '{{ vm_password }}'
@@ -75,7 +75,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
-        datacenter: '{{ datacenter }}'
+        datacenter: Datacenter
         folder: '{{ folder }}'
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
@@ -90,7 +90,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
-        datacenter: '{{ datacenter }}'
+        datacenter: Datacenter
         folder: '{{ folder }}'
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
@@ -105,7 +105,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
-        datacenter: '{{ datacenter }}'
+        datacenter: Datacenter
         folder: '{{ folder }}'
         vm_id: '{{ vmname }}'
         vm_username: '{{ vm_username }}'
