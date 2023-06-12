@@ -5,9 +5,9 @@
   tasks:
     - name: Deploy Virtual Machine from Template RHEL9 installed as minimal + perl
       vmware_guest:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: False
         guest_id: '{{ guest_id }}'
         name: '{{ vmname }}'
@@ -31,9 +31,9 @@
 
     - name: gather current network info (needed for NIC MAC address)
       community.vmware.vmware_guest_network:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter: '{{ datacenter }}'
         gather_network_info: true
         validate_certs: 
@@ -43,9 +43,9 @@
 
     - name: change VLAN (NIC PortGroup)
       community.vmware.vmware_guest_network:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter: '{{ datacenter }}'
         validate_certs: 
         name: '{{ vmname }}'
@@ -56,9 +56,9 @@
 
     - name: Change hostname on guest machine
       community.vmware.vmware_vm_shell:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: '{{ datacenter }}'
         folder: /
@@ -71,9 +71,9 @@
 
     - name: Change ip, netmask, gateway, dns, dns suffix on guest machine
       community.vmware.vmware_vm_shell:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: '{{ datacenter }}'
         folder: '{{ folder }}'
@@ -86,9 +86,9 @@
 
     - name: Activate new network parameters on guest machine 1/2
       community.vmware.vmware_vm_shell:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: '{{ datacenter }}'
         folder: '{{ folder }}'
@@ -101,9 +101,9 @@
 
     - name: Activate new network parameters on guest machine 2/2
       community.vmware.vmware_vm_shell:
-        hostname: '{{ vcenter_hostname }}'
-        username: '{{ vcenter_user }}'
-        password: '{{ vcenter_pass }}'
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         validate_certs: no
         datacenter: '{{ datacenter }}'
         folder: '{{ folder }}'
