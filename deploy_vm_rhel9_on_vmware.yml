@@ -8,7 +8,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        validate_certs: False
+        validate_certs: false
         guest_id: rhel9-64
         name: '{{ vmname }}' 
         state: poweredon
@@ -36,7 +36,7 @@
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter: Datacenter
         gather_network_info: true
-        validate_certs: 
+        validate_certs: false
         name: '{{ vmname }}'
       register: vmware_guest_network_info
       delegate_to: localhost
@@ -47,7 +47,7 @@
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
         datacenter: Datacenter
-        validate_certs: no
+        validate_certs: false
         name: '{{ vmname }}'
         mac_address: "{{ vmware_guest_network_info.network_data['0']['mac_address'] }}"
         network_name: '{{ vlan }}' 
@@ -74,7 +74,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        validate_certs: no
+        validate_certs: false
         datacenter: Datacenter
         folder: ansible-deploy
         vm_id: '{{ vmname }}'
@@ -89,7 +89,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        validate_certs: no
+        validate_certs: false
         datacenter: Datacenter
         folder: ansible-deploy
         vm_id: '{{ vmname }}'
@@ -104,7 +104,7 @@
         hostname: '{{ lookup("env", "VMWARE_HOST") }}'
         username: '{{ lookup("env", "VMWARE_USER") }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-        validate_certs: no
+        validate_certs: false
         datacenter: Datacenter
         folder: ansible-deploy
         vm_id: '{{ vmname }}'
