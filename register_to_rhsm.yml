@@ -1,0 +1,13 @@
+- name: Register RHEL to Red Hat Network 
+  hosts: all
+  gather_facts: false
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: Register as user and auto-subscribe to available content.
+      community.general.redhat_subscription:
+        state: present
+        username: pawel.koperwas@icloud.com
+        password: '{{ rhn_password }}'
+        auto_attach: true
