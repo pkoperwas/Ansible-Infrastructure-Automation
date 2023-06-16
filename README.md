@@ -1,3 +1,3 @@
 # Infrastructure Automation
 
-Some useful automations used in a private lab through defined jobs in ansible tower
+Some useful automations via ansible playbooks used in a private lab through defined jobs in ansible tower
