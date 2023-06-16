@@ -1,5 +1,5 @@
 - name: Install updates for all installed packages
-  hosts: all
+  hosts: "{{ ansible_host }}"
   gather_facts: false
   become: true
   remote_user: ansible
