@@ -113,36 +113,3 @@
         vm_shell: "/usr/bin/nmcli"
         vm_shell_args: "networking on"   
       delegate_to: localhost 
-
-    - name: Register to Red Hat Satellite or Red Hat Network
-      include_tasks: register_to_rhsm.yml
-
-    - name: Update All Packages
-      include_tasks: dnf_update_all.yml
-
-    - name: Install Additional Packages
-      include_tasks: dnf_install_additional_packages.yml
-
-    - name: Disable blacklist_i2c_piix4
-      include_tasks: blacklist_i2c_piix4.yml
-
-    - name: Disable transparent huge page
-      include_tasks: disable_transparent_hugepage.yml
-
-    - name: Install and enable chrony
-      include_tasks: enable_chrony.yml
-
-    - name: Install and enable cockpit
-      include_tasks: enable_cockpit.yml
-    
-    - name: Install and enable neofetch
-      include_tasks: enable_neofetch.yml
-
-    - name: Install and enable netdata
-      include_tasks: enable_netdata.yml
-
-    - name: Prompt adjustment 
-      include_tasks: prompt_adjustment.yml
-
- #   - name: Reboot OS to run with updated kernel
- #     include_tasks: rebootOS.yml
