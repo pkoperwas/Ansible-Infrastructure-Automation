@@ -144,5 +144,5 @@
     - name: Prompt adjustment 
       include_tasks: prompt_adjustment.yml
 
-    - name: Reboot OS to run with updated kernel
-      include_tasks: rebootOS.yml
+ #   - name: Reboot OS to run with updated kernel
+ #     include_tasks: rebootOS.yml
