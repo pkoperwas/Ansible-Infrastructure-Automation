@@ -1,5 +1,5 @@
 - name: Install updates for all installed packages
-  hosts: "{{ inventory_hostname }}"
+  hosts: "{{ lookup('env', 'TARGET_HOST') }}" 
   gather_facts: false
   become: true
   remote_user: ansible
