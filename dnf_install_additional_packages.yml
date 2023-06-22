@@ -5,19 +5,41 @@
   remote_user: ansible
   become_method: sudo
   tasks:
-    - name: Enable codeready-builder-for-rhel-9-x86_64-rpms
+    - name: Enable codeready-builder repository RHEL8
       rhsm_repository:
-        name: codeready-builder-for-rhel-9-x86_64-rpms
+        name: "codeready-builder-for-rhel-8-x86_64-rpms"
         state: enabled
+      when: ansible_distribution_major_version == '8'
 
-    - rpm_key:
+    - name: Enable codeready-builder repository RHEL9
+      rhsm_repository:
+        name: "codeready-builder-for-rhel-9-x86_64-rpms"
+        state: enabled
+      when: ansible_distribution_major_version == '9'
+
+    - name: RPM PGP Key Import RHEL8
+      rpm_key:
+        state: present
+        key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+      when: ansible_distribution_major_version == '8'  
+
+    - name: RPM PGP Key Import RHEL9
+      rpm_key:
         state: present
         key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+      when: ansible_distribution_major_version == '9'
 
-    - name: Enable epel-repository
+    - name: Enable epel-repository RHEL8
+      dnf:
+        name:
+          - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      when: ansible_distribution_major_version == '8'    
+
+    - name: Enable epel-repository RHEL9
       dnf:
         name:
           - https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+      when: ansible_distribution_major_version == '9'    
           
     - name: Install additional packages 
       dnf:
