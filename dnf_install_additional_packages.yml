@@ -1,6 +1,6 @@
 - name: Install additional packages 
   hosts: all
-  gather_facts: false
+  gather_facts: true
   become: true
   remote_user: ansible
   become_method: sudo
