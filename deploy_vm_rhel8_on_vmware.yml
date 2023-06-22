@@ -1,0 +1,115 @@
+- name: Deploy New Virtual Machine by cloning golden image with RHEL8 on vSphere vCenter
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Deploy Virtual Machine from Template RHEL8 installed as minimal + perl
+      vmware_guest:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: false
+        guest_id: rhel8-64
+        name: '{{ vmname }}' 
+        state: poweredon
+        template: rhel8-template
+        datacenter: Datacenter
+        folder: ansible-deploy
+        esxi_hostname: '{{ esxhost }}'
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: '{{ datastore }}'
+        hardware:
+          memory_mb: '{{ memory_mb }}'
+          num_cpus: '{{ num_cpus }}'
+          scsi: paravirtual
+        wait_for_customization: no
+        wait_for_customization_timeout: 300
+        wait_for_ip_address: yes
+      delegate_to: localhost
+
+    - name: gather current network info (needed for NIC MAC address)
+      community.vmware.vmware_guest_network:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: Datacenter
+        gather_network_info: true
+        validate_certs: false
+        name: '{{ vmname }}'
+      register: vmware_guest_network_info
+      delegate_to: localhost
+
+    - name: change VLAN (NIC PortGroup)
+      community.vmware.vmware_guest_network:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        datacenter: Datacenter
+        validate_certs: false
+        name: '{{ vmname }}'
+        mac_address: "{{ vmware_guest_network_info.network_data['0']['mac_address'] }}"
+        network_name: '{{ vlan }}' 
+        state: present
+      delegate_to: localhost
+
+    - name: Change hostname on guest machine
+      community.vmware.vmware_vm_shell:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: no
+        datacenter: Datacenter
+        folder: ansible-deploy
+        vm_id: '{{ vmname }}'
+        vm_username: '{{ vm_username }}'
+        vm_password: '{{ vm_password }}'
+        vm_shell: "/usr/bin/hostnamectl"
+        vm_shell_args: "set-hostname '{{ vmhostname }}'"
+      delegate_to: localhost
+
+    - name: Change ip, netmask, gateway, dns, dns suffix on guest machine
+      community.vmware.vmware_vm_shell:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: false
+        datacenter: Datacenter
+        folder: ansible-deploy
+        vm_id: '{{ vmname }}'
+        vm_username: '{{ vm_username }}'
+        vm_password: '{{ vm_password }}'
+        vm_shell: "/usr/bin/nmcli"
+        vm_shell_args: "con mod $(nmcli connection |grep ethernet | head -1 | awk '{print $1}') ipv4.method manual ipv4.addresses '{{ ip }}'/'{{ netmask_cidr }}' ipv4.gateway '{{ gateway }}' ipv4.dns '{{ dns_servers }}' ipv4.dns-search '{{ dns_suffix }}' ipv6.method disabled connection.autoconnect yes"
+      delegate_to: localhost
+
+    - name: Activate new network parameters on guest machine 1/2
+      community.vmware.vmware_vm_shell:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: false
+        datacenter: Datacenter
+        folder: ansible-deploy
+        vm_id: '{{ vmname }}'
+        vm_username: '{{ vm_username }}'
+        vm_password: '{{ vm_password }}'
+        vm_shell: "/usr/bin/nmcli"
+        vm_shell_args: "networking off"
+      delegate_to: localhost
+
+    - name: Activate new network parameters on guest machine 2/2
+      community.vmware.vmware_vm_shell:
+        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        username: '{{ lookup("env", "VMWARE_USER") }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        validate_certs: false
+        datacenter: Datacenter
+        folder: ansible-deploy
+        vm_id: '{{ vmname }}'
+        vm_username: '{{ vm_username }}'
+        vm_password: '{{ vm_password }}'
+        vm_shell: "/usr/bin/nmcli"
+        vm_shell_args: "networking on"   
+      delegate_to: localhost 
