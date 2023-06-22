@@ -17,7 +17,7 @@
         folder: ansible-deploy
         esxi_hostname: '{{ esxhost }}'
         disk:
-        - size_gb: 20
+        - size_gb: 40
           type: thin
           datastore: '{{ datastore }}'
         hardware:
