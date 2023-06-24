@@ -55,3 +55,29 @@
         - 'SESSTIMEOUT=3600 '
         - 'readonly SESSTIMEOUT'
         - 'export SESSTIMEOUT'
+
+
+    - name: blacklist i2c_piix4
+      lineinfile:
+        path: /etc/modprobe.d/no_i2c_piix4.conf
+        create: yes
+        line: blacklist i2c_piix4
+
+    - name: disable transparent_hugepage in /etc/default/grub
+      lineinfile:
+        state: present
+        dest: /etc/default/grub
+        backrefs: yes
+        regexp: '^(GRUB_CMDLINE_LINUX=(?!.* transparent_hugepage)\"[^\"]+)(\".*)'
+        line: '\1 transparent_hugepage=never\2'
+
+    - name: check if rebuild grub is needed, maybe entry was already done previously, so no rebuild is needed
+      command: "find /etc/default/grub -cmin -10"
+      register: grub_out
+
+    - name: write grub configuration file
+      command: "{{ item }}"
+      with_items:
+        - grub2-mkconfig -o /boot/grub2/grub.cfg
+        - dracut -v -f
+      when: grub_out.stdout | regex_search('grub')        
