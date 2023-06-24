@@ -5,18 +5,29 @@
   remote_user: ansible
   become_method: sudo
   tasks:
-    - name: insert a line with HISTTIMEFORMAT to /etc/profile.d/shell_configuration.sh
+    - name: neofetch - package installation
+      dnf:
+        name:
+          - neofetch
+
+    - name: neofetch - enable on profile
+      lineinfile:
+        path: /etc/profile.d/nice_motd.sh
+        create: yes
+        line: neofetch --disable packages
+
+    - name: command history - insert a line with HISTTIMEFORMAT to /etc/profile.d/shell_configuration.sh
       lineinfile:
         create: yes
         path: /etc/profile.d/shell_configuration.sh
         line: export HISTTIMEFORMAT='%h/%d %H:%M:%S '
 
-    - name: insert a line with HISTSIZE to /etc/profile.d/shell_configuration.sh
+    - name: command history - insert a line with HISTSIZE to /etc/profile.d/shell_configuration.sh
       lineinfile:
         path: /etc/profile.d/shell_configuration.sh
         line: export HISTSIZE=9999
 
-    - name: insert a line with color prompt to /etc/profile.d/shell_configuration.sh
+    - name: prompt settings - insert a line with color prompt to /etc/profile.d/shell_configuration.sh
       lineinfile:
         dest: /etc/profile.d/shell_configuration.sh
         line: '{{ item }}'
@@ -30,13 +41,13 @@
         - '  PS1="$GREEN\u@\h [ $NORMAL\w$GREEN ]\$ $NORMAL"'
         - 'fi'
 
-    - name: insert a line with colorscheme for vim editior to /etc/vimrc
+    - name: vim configuration - insert a line with colorscheme for vim editior to /etc/vimrc
       lineinfile:
         path: /etc/vimrc
         line: colorscheme desert
 
 
-    - name: insert a line with sessiontimeout  to /etc/profile.d/shell_configuration.sh
+    - name: session configuration - insert a line with sessiontimeout  to /etc/profile.d/shell_configuration.sh
       lineinfile:
         dest: /etc/profile.d/shell_configuration.sh
         line: '{{ item }}'
