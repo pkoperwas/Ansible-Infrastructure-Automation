@@ -1,0 +1,89 @@
+- name: Install additional deamons 
+  hosts: all
+  gather_facts: true
+  become: true
+  remote_user: ansible
+  become_method: sudo
+  tasks:
+    - name: chrony - install package
+      dnf:
+        name:
+          - chrony
+        state: latest
+
+    - name: chrony - change time servers to pool from PL
+      replace:
+        path: /etc/chrony.conf
+        regexp: '(^pool\s)(.*)$'
+        replace: 'pool pl.pool.ntp.org iburst'
+
+    - name: chrony - enable and start daemon
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+
+    - name: cockpit - install package
+      dnf:
+        name:
+          - cockpit
+        state: latest
+
+    - name: cockpit - check firewald status
+      command: systemctl is-active firewalld
+      register: firewalld_status
+      changed_when: false
+      failed_when: false
+
+    - name: cockpit - reconfigure firewalld if enabled
+      firewalld:
+        service: cockpit
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: firewalld_status.stdout == "active"
+
+    - name: cockpit - start and enable daemon
+      service:
+        name: cockpit.socket
+        state: started
+        enabled: yes
+
+
+    - name: netdata - package installation
+      dnf:
+        name:
+          - netdata
+        state: latest
+
+    - name: netdata - firewald status check
+      command: systemctl is-active firewalld
+      register: firewalld_status
+      changed_when: false
+      failed_when: false
+
+    - name: netdata - reconfigure firewalld if enabled
+      firewalld:
+        port: 19999/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: firewalld_status.stdout == "active"
+
+    - name: netdata - changing bind address from localhost to any
+      replace:
+        path: /etc/netdata/netdata.conf
+        regexp: 'bind to = localhost'
+        replace: 'bind to = any'
+
+    - name: netdata - change group from netdata to root
+      replace:
+        path: /etc/netdata/netdata.conf
+        regexp: 'web files group = netdata'
+        replace: 'web files group = root'
+
+    - name: netdata - start and enable daemon
+      service:
+        name: netdata
+        state: started
+        enabled: yes
