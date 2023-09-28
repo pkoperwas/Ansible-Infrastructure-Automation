@@ -113,3 +113,7 @@
         vm_shell: "/usr/bin/nmcli"
         vm_shell_args: "networking on"   
       delegate_to: localhost 
+
+    - name: Wait a minute until the network is fully active
+      ansible.builtin.pause:
+        minutes: 1
