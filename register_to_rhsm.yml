@@ -8,6 +8,6 @@
     - name: Register as user and auto-subscribe to available content.
       community.general.redhat_subscription:
         state: present
-        username: pawel.koperwas@icloud.com
+        username: '{{ rhn_user }}'
         password: '{{ rhn_password }}'
         auto_attach: true
