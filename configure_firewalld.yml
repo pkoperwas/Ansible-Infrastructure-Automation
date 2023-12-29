@@ -1,0 +1,26 @@
+---
+- name: Configure Firewalld on PLM servers
+  hosts: all
+  become: true
+  vars_files:
+    - vars/firewalld_ports_definitions.yml
+
+  tasks:
+    - name: Define firewalld service for each server
+      firewalld_service:
+        name: 3ds
+        permanent: yes
+        ports: "{{ item.ports.3ds }}"
+        immediate: yes
+      loop: "{{ servers }}"
+
+    - name: Enable incoming traffic for the 3ds services
+      firewalld_zone:
+        service: 3ds
+        state: enabled
+
+    - name: Ensure firewalld service is running and enabled
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
