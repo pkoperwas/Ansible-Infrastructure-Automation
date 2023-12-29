@@ -10,7 +10,7 @@
       firewalld:
         name: 3ds
         permanent: yes
-        ports: "{{ item.ports.3ds }}"
+        ports: "{{ item.ports }}"
         immediate: yes
       loop: "{{ servers }}"
 
