@@ -12,6 +12,7 @@
         permanent: yes
         ports: "{{ item.ports }}"
         immediate: yes
+        state: enabled
       loop: "{{ servers }}"
 
     - name: Enable incoming traffic for the 3ds services
