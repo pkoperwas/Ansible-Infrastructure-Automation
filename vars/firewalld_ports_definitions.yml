@@ -1,7 +1,13 @@
 ---
 servers:
   - name: jumphost.local
-    ports: "443/tcp,80/tcp,100-200/tcp"
+    ports:
+      3ds: 
+        - 8800/tcp
+        - 9000-9010/tcp
       
   - name: wazuh.local
-    ports: "8080/tcp,300-400/tcp"
+    ports:
+      3ds: 
+        - 1990/tcp
+        - 1900-1910/tcp
