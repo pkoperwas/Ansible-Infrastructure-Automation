@@ -7,7 +7,7 @@
 
   tasks:
     - name: Define firewalld service for each server
-      firewalld_service:
+      firewalld:
         name: 3ds
         permanent: yes
         ports: "{{ item.ports.3ds }}"
@@ -15,7 +15,7 @@
       loop: "{{ servers }}"
 
     - name: Enable incoming traffic for the 3ds services
-      firewalld_zone:
+      firewalld:
         service: 3ds
         state: enabled
 
