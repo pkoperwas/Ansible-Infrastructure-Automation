@@ -2,23 +2,8 @@
 servers:
   - name: jumphost.local
     ports:
-      3ds:
-        - 6000/tcp
-        - 6002/tcp
-        - 6010/tcp
-        - 10000/tcp
-        - 10002/tcp
-        - 11000-11200/tcp
-        - 12010/tcp
-        - 12012/tcp
-
+      3ds: "443/tcp,80/tcp,100-200/tcp"
+      
   - name: wazuh.local
     ports:
-      3ds:
-        - 6002/tcp
-        - 6010/tcp
-        - 10000/tcp
-        - 10002/tcp
-        - 21000-21200/tcp
-        - 12010/tcp
-        - 12012/tcp
+      3ds: "8080/tcp,300-400/tcp"
