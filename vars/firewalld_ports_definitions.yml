@@ -1,6 +1,6 @@
 ---
 servers:
-  - name: jumphost
+  - name: jumphost.local
     ports:
       3ds:
         - 6000/tcp
@@ -12,7 +12,7 @@ servers:
         - 12010/tcp
         - 12012/tcp
 
-  - name: wazuh
+  - name: wazuh.local
     ports:
       3ds:
         - 6002/tcp
