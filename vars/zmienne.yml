@@ -1,0 +1,10 @@
+firewalld_open_ports:
+  jumphost.local:
+    - 5566
+    - 8886
+    - 9969-10610
+    - 2455
+    - 6665
+  ansible.local:
+    - 454
+    - 678
