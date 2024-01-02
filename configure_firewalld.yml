@@ -1,27 +1,25 @@
 ---
-- name: Configure Firewalld on PLM servers
+- name: Allow incomming traffic on local firewall 
   hosts: all
   become: true
-  vars_files:
-    - vars/firewalld_ports_definitions.yml
-
   tasks:
-    - name: Define firewalld service for each server
-      firewalld:
-        name: 3ds
-        permanent: yes
-        ports: "{{ item.ports }}"
-        immediate: yes
-        state: enabled
-      loop: "{{ servers }}"
-
-    - name: Enable incoming traffic for the 3ds services
-      firewalld:
-        service: 3ds
-        state: enabled
+    - name: Read variables from file
+      include_vars: vars/zmienne.yml
 
     - name: Ensure firewalld service is running and enabled
       systemd:
         name: firewalld
         state: started
         enabled: yes
+
+    - name: Allow incomming traffic on local firewall - ports provided by clustomer
+      firewalld:
+        port: "{{ item }}/tcp"
+        permanent: true
+        state: enabled
+      loop: "{{ firewalld_open_ports[inventory_hostname] }}"
+
+    - name: Always reload firewalld after adjustment
+      service:
+        name: firewalld
+        state: reloaded
