@@ -1,0 +1,6 @@
+- name: Zaktualizuj plik konfiguracyjny SSH
+  lineinfile:
+    path: /etc/crypto-policies/back-ends/opensshserver.config
+    regexp: '^Ciphers .*chacha20-poly1305@openssh\.com.*$'
+    state: absent
+  when: "'9.' in rhel_version_output.stdout"
