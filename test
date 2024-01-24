@@ -1,6 +1,6 @@
 - name: Zaktualizuj zmienną CRYPTO_POLICY
   lineinfile:
     path: /ścieżka/do/twojego/pliku
-    regexp: "(CRYPTO_POLICY='[^']*),chacha20-poly1305@openssh\.com([^']*')"
+    regexp: "(CRYPTO_POLICY='[^']*),?(chacha20-poly1305@openssh\.com|aes256-cbc|aes128-cbc)([^']*')"
     backrefs: yes
     state: absent
