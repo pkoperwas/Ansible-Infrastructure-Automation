@@ -27,3 +27,22 @@ systemctl restart sshd
       systemd:
         name: sshd
         state: reloaded
+
+
+
+
+---
+- name: Dodaj wiele linii do pliku
+  hosts: localhost
+  gather_facts: true
+
+  tasks:
+    - name: Dodaj blok tekstu do pliku
+      blockinfile:
+        path: /ścieżka/do/twojego/pliku
+        block: |
+          Linia 1
+          Linia 2
+          Linia 3
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+
