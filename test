@@ -1,6 +1,6 @@
-- name: Zaktualizuj plik konfiguracyjny SSH
+- name: Zaktualizuj zmienną CRYPTO_POLICY
   lineinfile:
-    path: /etc/crypto-policies/back-ends/opensshserver.config
-    regexp: '^Ciphers .*chacha20-poly1305@openssh\.com.*$'
+    path: /ścieżka/do/twojego/pliku
+    regexp: "(CRYPTO_POLICY='[^']*),chacha20-poly1305@openssh\.com([^']*')"
+    backrefs: yes
     state: absent
-  when: "'9.' in rhel_version_output.stdout"
