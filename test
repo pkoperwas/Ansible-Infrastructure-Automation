@@ -2,3 +2,28 @@ echo 'Ciphers -chacha20-poly1305@openssh.com' > /etc/ssh/sshd_config.d/anti-terr
 echo 'Ciphers -chacha20-poly1305@openssh.com' > /etc/ssh/ssh_config.d/anti-terrapin-attack.conf
 
 systemctl restart sshd
+
+
+
+---
+- name: Stwórz plik anti-terrapin-attack.conf w /etc/ssh/sshd_config.d/
+  hosts: localhost
+  gather_facts: true
+
+  tasks:
+    - name: Utwórz katalog sshd_config.d, jeśli nie istnieje
+      file:
+        path: /etc/ssh/sshd_config.d
+        state: directory
+
+    - name: Utwórz plik anti-terrapin-attack.conf
+      lineinfile:
+        path: /etc/ssh/sshd_config.d/anti-terrapin-attack.conf
+        line: "Ciphers -chacha20-poly1305@openssh.com"
+      notify: Reload SSH
+
+  handlers:
+    - name: Reload SSH
+      systemd:
+        name: sshd
+        state: reloaded
